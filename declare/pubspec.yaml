@@ -1,6 +1,6 @@
 name: declare
 description: "A lightweight, SwiftUI-inspired state management library for Flutter. Powered by State, ViewModel, and Published."
-version: 0.0.1
+version: 1.0.0
 homepage: https://github.com/siva-sankar-dev/declare.git
 repository: https://github.com/siva-sankar-dev/declare.git
 issue_tracker: https://github.com/siva-sankar-dev/declare/issues

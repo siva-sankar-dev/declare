@@ -1,20 +1,25 @@
+
+---
+
 # 📦 Declare
 
-**SwiftUI-inspired reactive state management for Flutter** — powered by `@State`, `@Published`, and `ViewModel` concepts.
+**SwiftUI-inspired reactive state management for Flutter** — powered by `State<T>`, `Published<T>`, `Computed<T>`, and `ViewModel` concepts.
 
-> Simple. Lightweight. Declarative.
+> Simple. Lightweight. Declarative. No external dependencies.
 
 ---
 
 ## ✨ Features
 
-✅ Minimal syntax like SwiftUI  
-✅ `State<T>` – reactive local state (like `@State`)  
-✅ `Published<T>` – reactive shared state (like `@Published`)  
-✅ `ViewModel` – lightweight logic container (like `ObservedObject`)  
-✅ `StateBuilder` / `ViewModelBuilder` widgets for rebuilds  
-✅ No dependencies — just pure Flutter  
-✅ Perfect for MVVM
+✅ Minimal, expressive syntax inspired by SwiftUI
+✅ `State<T>` – reactive local state with automatic notification
+✅ `Published<T>` – nullable reactive state that notifies parent ViewModel
+✅ `Computed<T>` – derived reactive values based on dependencies
+✅ `ViewModel` – lifecycle-aware logic container managing reactive states
+✅ `DeclareView<T>` – widget that creates and listens to a ViewModel, rebuilding on changes
+✅ `Observer<T>` – widget that listens to any `ValueListenable<T>` and rebuilds on changes
+✅ Pure Dart and Flutter — no third-party dependencies
+✅ Designed for clean MVVM architecture
 
 ---
 
@@ -24,5 +29,72 @@ Add `declare` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  declare: ^0.0.1
+  declare: ^1.0.0
 ```
+
+### Using `DeclareView` with a `ViewModel`
+
+```dart
+class CounterViewModel extends ViewModel {
+  final count = state<int>(0);
+
+  void increment() => count.update(count.value + 1);
+}
+
+DeclareView<CounterViewModel>(
+  create: () => CounterViewModel(),
+  builder: (context, vm) {
+    return Column(
+      children: [
+        Observer<int>(
+          observable: vm.count,
+          builder: (context, value) => Text('Count: $value'),
+        ),
+        ElevatedButton(
+          onPressed: vm.increment,
+          child: Text('Increment'),
+        ),
+      ],
+    );
+  },
+);
+```
+
+### Reacting to any `ValueListenable<T>` with `Observer`
+
+```dart
+Observer<int>(
+  observable: someValueListenable,
+  builder: (context, value) => Text('Value: $value'),
+);
+```
+
+---
+
+## 📚 API Overview
+
+* `State<T>` – a reactive wrapper around a value with update and transform methods. Notifies listeners on changes.
+* `Published<T>` – nullable reactive state, notifies its parent `ViewModel` when changed.
+* `Computed<T>` – a derived reactive value computed from one or more dependencies (`ValueListenable`s).
+* `ViewModel` – base class managing multiple reactive states and computed values, with lifecycle hooks `onInit()` and `onDispose()`.
+* `DeclareView<T extends ViewModel>` – Flutter widget that instantiates a ViewModel, calls its lifecycle, and rebuilds on change.
+* `Observer<T>` – widget that listens to any `ValueListenable<T>` and rebuilds when the value changes.
+
+---
+
+## ⚙️ Lifecycle
+
+* `ViewModel.onInit()` is called once when `DeclareView` initializes.
+* `ViewModel.onDispose()` is called when `DeclareView` disposes.
+* Reactive states notify their parent ViewModel, which triggers widget rebuilds.
+
+---
+
+## 🛠️ Advantages
+
+* Familiar MVVM pattern with reactive data binding
+* No extra dependencies, pure Flutter code
+* Clear separation of UI and business logic
+* Easy to test ViewModels without Flutter widgets
+
+---

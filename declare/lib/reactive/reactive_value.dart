@@ -1,13 +1,13 @@
 // ------------------------------------------------------------ //
-//  published.dart
+//  reactive_value.dart
 //
 //  Created by Siva Sankar on 2025-06-06.
 // ------------------------------------------------------------ //
 
 import 'package:flutter/foundation.dart';
 
-class Published<T> extends ValueNotifier<T?> {
-  Published([super.initialValue]);
+abstract class ReactiveValue<T> extends ValueNotifier<T> {
+  ReactiveValue(super.value);
   
   /// Optional parent that gets notified when this value changes
   ChangeNotifier? _parent;
@@ -17,25 +17,12 @@ class Published<T> extends ValueNotifier<T?> {
   }
   
   @override
-  set value(T? newValue) {
+  set value(T newValue) {
     if (value != newValue) {
       super.value = newValue;
       _parent?.notifyListeners();
     }
   }
-  
-  /// Update value and notify listeners
-  void update(T? newValue) {
-    value = newValue;
-  }
-  
-  /// Clear the value (set to null)
-  void clear() {
-    value = null;
-  }
-  
-  /// Check if has value
-  bool get hasValue => value != null;
   
   @override
   void dispose() {
