@@ -5,9 +5,8 @@
 // ------------------------------------------------------------ //
 
 import 'package:declare/reactive/computed.dart';
-import 'package:declare/reactive/state.dart';
+import 'package:declare/reactive/prop.dart';
 import 'package:flutter/foundation.dart';
-
 
 // ------------------------------------------------------------ //
 // Reactive Extentions
@@ -32,8 +31,8 @@ extension ReactiveExtensions<T> on ValueListenable<T> {
 }
 
 // ------------------------------------------------------------ //
-// State Extentions
-extension StateExtensions<T> on State<T> {
+// Prop Extentions
+extension PropExtensions<T> on Prop<T> {
   /// Increment numeric values
   void increment() {
     if (T == int) {
@@ -62,7 +61,7 @@ extension StateExtensions<T> on State<T> {
 
 // ------------------------------------------------------------ //
 // List State Extentions
-extension ListStateExtensions<T> on State<List<T>> {
+extension ListStateExtensions<T> on Prop<List<T>> {
   /// Add item to list
   void add(T item) {
     value = [...value, item];

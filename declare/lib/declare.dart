@@ -5,7 +5,7 @@
 // ------------------------------------------------------------ //
 library;
 
-export 'reactive/state.dart';
+export 'reactive/prop.dart';
 export 'reactive/published.dart';
 export 'reactive/view_model.dart';
 export 'reactive/computed.dart';

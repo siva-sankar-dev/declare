@@ -8,3 +8,6 @@
 - Fixed notifyListeners issue
 - Added hot reload support for state preservation
 - Changed name of ViewModelBuilder -> DeclareView
+
+## 1.0.1 
+- Bug Fix : Changed State -> Prop avoid Conflicts

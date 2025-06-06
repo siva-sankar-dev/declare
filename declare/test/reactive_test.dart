@@ -1,34 +1,34 @@
+import 'package:declare/declare.dart';
 import 'package:declare/reactive/computed.dart';
 import 'package:declare/reactive/published.dart';
-import 'package:declare/reactive/state.dart';
 import 'package:declare/reactive/view_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('State<T>', () {
+  group('prop<T>', () {
     test('should notify listeners when value changes', () {
-      final state = State<int>(0);
+      final prop = Prop<int>(0);
       bool notified = false;
 
-      state.addListener(() {
+      prop.addListener(() {
         notified = true;
       });
 
-      state.value = 1;
-      expect(state.value, 1);
+      prop.value = 1;
+      expect(prop.value, 1);
       expect(notified, true);
     });
 
     test('should not notify listeners if value is the same', () {
-      final state = State<int>(1);
+      final prop = Prop<int>(1);
       bool notified = false;
 
-      state.addListener(() {
+      prop.addListener(() {
         notified = true;
       });
 
-      state.value = 1;
+      prop.value = 1;
       expect(notified, false);
     });
   });
@@ -59,8 +59,8 @@ void main() {
 
   group('Computed<T>', () {
     test('should recompute when dependency changes', () {
-      final a = State<int>(1);
-      final b = State<int>(2);
+      final a = Prop<int>(1);
+      final b = Prop<int>(2);
       final computed = Computed(() => a.value + b.value, [a, b]);
 
       expect(computed.value, 3);
@@ -70,7 +70,7 @@ void main() {
     });
 
     test('should not update after dispose', () {
-      final a = State<int>(1);
+      final a = Prop<int>(1);
       final computed = Computed(() => a.value * 2, [a]);
       computed.dispose();
 
@@ -107,7 +107,7 @@ void main() {
 
 /// A dummy ViewModel for testing registration
 class MyTestViewModel extends ViewModel {
-  late final State<int> count = state(0);
+  late final Prop<int> count = Prop(0);
   late final Published<String> name = published();
 }
 

@@ -12,7 +12,7 @@
 ## ✨ Features
 
 ✅ Minimal, expressive syntax inspired by SwiftUI
-✅ `State<T>` – reactive local state with automatic notification
+✅ `Prop<T>` – reactive local state with automatic notification
 ✅ `Published<T>` – nullable reactive state that notifies parent ViewModel
 ✅ `Computed<T>` – derived reactive values based on dependencies
 ✅ `ViewModel` – lifecycle-aware logic container managing reactive states
@@ -36,9 +36,23 @@ dependencies:
 
 ```dart
 class CounterViewModel extends ViewModel {
-  final count = state<int>(0);
+  late final Prop<int> count;
+
+  CounterViewModel() {
+    count = Prop<int>(0);
+  }
 
   void increment() => count.update(count.value + 1);
+
+  @override
+  void onInit() {
+    print('CounterViewModel initialized');
+  }
+
+  @override
+  void onDispose() {
+    print('CounterViewModel disposed');
+  }
 }
 
 DeclareView<CounterViewModel>(
@@ -73,7 +87,7 @@ Observer<int>(
 
 ## 📚 API Overview
 
-* `State<T>` – a reactive wrapper around a value with update and transform methods. Notifies listeners on changes.
+* `Prop<T>` – a reactive wrapper around a value with update and transform methods. Notifies listeners on changes.
 * `Published<T>` – nullable reactive state, notifies its parent `ViewModel` when changed.
 * `Computed<T>` – a derived reactive value computed from one or more dependencies (`ValueListenable`s).
 * `ViewModel` – base class managing multiple reactive states and computed values, with lifecycle hooks `onInit()` and `onDispose()`.

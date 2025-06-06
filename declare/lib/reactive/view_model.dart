@@ -6,19 +6,19 @@
 
 import 'package:declare/reactive/computed.dart';
 import 'package:declare/reactive/published.dart';
-import 'package:declare/reactive/state.dart';
+import 'package:declare/reactive/prop.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class ViewModel extends ChangeNotifier {
-  final Set<ValueListenable> _reactiveStates = {};
+  final Set<ValueListenable> _Cells = {};
   final Set<Computed> _computedValues = {};
   bool _disposed = false;
 
   /// Create a reactive state
-  State<T> state<T>(T initialValue) {
-    final state = State<T>(initialValue);
+  Prop<T> state<T>(T initialValue) {
+    final state = Prop<T>(initialValue);
     state.setParent(this);
-    _reactiveStates.add(state);
+    _Cells.add(state);
     return state;
   }
 
@@ -26,7 +26,7 @@ abstract class ViewModel extends ChangeNotifier {
   Published<T> published<T>([T? initialValue]) {
     final published = Published<T>(initialValue);
     published.setParent(this);
-    _reactiveStates.add(published);
+    _Cells.add(published);
     return published;
   }
 
@@ -59,14 +59,14 @@ abstract class ViewModel extends ChangeNotifier {
     onDispose();
     
     // Dispose all reactive states
-    for (final state in _reactiveStates) {
-      if (state is State) {
+    for (final state in _Cells) {
+      if (state is Prop) {
         state.dispose();
       } else if (state is Published) {
         state.dispose();
       }
     }
-    _reactiveStates.clear();
+    _Cells.clear();
     
     // Dispose all computed values
     for (final computed in _computedValues) {
