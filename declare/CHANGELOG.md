@@ -14,3 +14,6 @@
 
 ## 1.0.2
 - Improved Version: Now Works Without Observer
+
+## 1.1.0
+- Project CleanUp and Refactoring

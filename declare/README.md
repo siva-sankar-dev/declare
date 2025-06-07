@@ -35,7 +35,7 @@ Add `declare` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  declare: ^1.0.0
+  declare: ^1.1.0
 ```
 
 ### Basic Example - Auto-Reactive Counter

@@ -1,13 +1,12 @@
 // ------------------------------------------------------------ //
 //  view_model.dart
 //
-//  Created by Siva Sankar on 2025-06-06.
+//  Created by Siva Sankar on 2025-06-07.
 // ------------------------------------------------------------ //
 
-import 'package:declare/reactive/computed.dart';
-import 'package:declare/reactive/published.dart';
-import 'package:declare/reactive/prop.dart';
+
 import 'package:flutter/foundation.dart';
+import 'reactive.dart';
 
 abstract class ViewModel extends ChangeNotifier {
   final Set<ValueListenable> _cells = {};
