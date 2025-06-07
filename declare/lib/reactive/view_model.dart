@@ -10,7 +10,7 @@ import 'package:declare/reactive/prop.dart';
 import 'package:flutter/foundation.dart';
 
 abstract class ViewModel extends ChangeNotifier {
-  final Set<ValueListenable> _Cells = {};
+  final Set<ValueListenable> _cells = {};
   final Set<Computed> _computedValues = {};
   bool _disposed = false;
 
@@ -18,7 +18,7 @@ abstract class ViewModel extends ChangeNotifier {
   Prop<T> state<T>(T initialValue) {
     final state = Prop<T>(initialValue);
     state.setParent(this);
-    _Cells.add(state);
+    _cells.add(state);
     return state;
   }
 
@@ -26,12 +26,15 @@ abstract class ViewModel extends ChangeNotifier {
   Published<T> published<T>([T? initialValue]) {
     final published = Published<T>(initialValue);
     published.setParent(this);
-    _Cells.add(published);
+    _cells.add(published);
     return published;
   }
 
   /// Create a computed value
-  Computed<T> computed<T>(T Function() compute, List<ValueListenable> dependencies) {
+  Computed<T> computed<T>(
+    T Function() compute,
+    List<ValueListenable> dependencies,
+  ) {
     final computed = Computed<T>(compute, dependencies);
     _computedValues.add(computed);
     return computed;
@@ -55,25 +58,25 @@ abstract class ViewModel extends ChangeNotifier {
   void dispose() {
     if (_disposed) return;
     _disposed = true;
-    
+
     onDispose();
-    
+
     // Dispose all reactive states
-    for (final state in _Cells) {
+    for (final state in _cells) {
       if (state is Prop) {
         state.dispose();
       } else if (state is Published) {
         state.dispose();
       }
     }
-    _Cells.clear();
-    
+    _cells.clear();
+
     // Dispose all computed values
     for (final computed in _computedValues) {
       computed.dispose();
     }
     _computedValues.clear();
-    
+
     super.dispose();
   }
 }
