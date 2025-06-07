@@ -17,3 +17,6 @@
 
 ## 1.1.0
 - Project CleanUp and Refactoring
+
+## 1.2.0 - Major Changes
+- Core Architeture changed
