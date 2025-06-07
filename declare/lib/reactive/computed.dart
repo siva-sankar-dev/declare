@@ -5,9 +5,10 @@
 // ------------------------------------------------------------ //
 
 
+import 'package:declare/reactive/reactive_context.dart';
 import 'package:flutter/foundation.dart';
 
-class Computed<T> extends ValueListenable<T> {
+class Computed<T> implements ValueListenable<T> {
   final T Function() _compute;
   final List<ValueListenable> _dependencies;
   late T _value;
@@ -36,7 +37,11 @@ class Computed<T> extends ValueListenable<T> {
   }
 
   @override
-  T get value => _value;
+  T get value {
+    // Track access in the current reactive context
+    ReactiveContext.current?.trackAccess(this);
+    return _value;
+  }
 
   @override
   void addListener(VoidCallback listener) {

@@ -4,9 +4,10 @@
 //  Created by Siva Sankar on 2025-06-06.
 // ------------------------------------------------------------ //
 
+import 'package:declare/reactive/tracked_reactive_value';
 import 'package:flutter/foundation.dart';
 
-class Published<T> extends ValueNotifier<T?> {
+class Published<T> extends ValueNotifier<T?> with TrackedValueMixin<T?> {
   Published([super.initialValue]);
   
   /// Optional parent that gets notified when this value changes
@@ -17,8 +18,11 @@ class Published<T> extends ValueNotifier<T?> {
   }
   
   @override
+  T? _getRawValue() => super.value;
+  
+  @override
   set value(T? newValue) {
-    if (value != newValue) {
+    if (super.value != newValue) {
       super.value = newValue;
       _parent?.notifyListeners();
     }

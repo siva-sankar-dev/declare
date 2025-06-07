@@ -4,32 +4,27 @@
 //  Created by Siva Sankar on 2025-06-06.
 // ------------------------------------------------------------ //
 
+import 'package:declare/reactive/reactive_context.dart';
 import 'package:declare/reactive/view_model.dart';
 import 'package:flutter/material.dart';
 
-/// A widget that manages the lifecycle of a [ViewModel] and rebuilds the UI
-/// when the ViewModel notifies changes.
+/// A widget that manages the lifecycle of a [ViewModel] and automatically
+/// tracks reactive value access to rebuild the UI when needed.
 ///
-/// This is the entry point for using the reactive state management system.
-/// It handles:
-/// - Creating the ViewModel instance
-/// - Invoking `onInit()` when the widget is inserted into the widget tree
-/// - Automatically calling `dispose()` when removed
-/// - Listening to the ViewModel’s notifications and triggering `setState()`
+/// Now you can simply use `viewModel.count.value` in your builder and
+/// the widget will automatically rebuild when `count` changes.
 ///
 /// Example usage:
 /// ```dart
 /// DeclareView<MyViewModel>(
 ///   create: () => MyViewModel(),
 ///   builder: (context, viewModel) {
-///     return Text(viewModel.title.value);
+///     return Text('Count: ${viewModel.count.value}'); // Auto-reactive!
 ///   },
 /// );
 /// ```
 class DeclareView<T extends ViewModel> extends StatefulWidget {
   /// A factory function that creates a new instance of [ViewModel].
-  ///
-  /// This function is called only once when the widget is inserted into the widget tree.
   final T Function() create;
 
   /// A builder function that provides the [BuildContext] and the created [ViewModel]
@@ -37,11 +32,7 @@ class DeclareView<T extends ViewModel> extends StatefulWidget {
   final Widget Function(BuildContext context, T viewModel) builder;
 
   /// Creates a [DeclareView] with the given [create] and [builder] functions.
-  const DeclareView({
-    super.key,
-    required this.create,
-    required this.builder,
-  });
+  const DeclareView({super.key, required this.create, required this.builder});
 
   @override
   State<DeclareView<T>> createState() => _DeclareViewState<T>();
@@ -51,15 +42,19 @@ class _DeclareViewState<T extends ViewModel> extends State<DeclareView<T>> {
   /// Holds the instance of the created ViewModel.
   late final T _viewModel;
 
+  /// Reactive context for tracking value access
+  late final ReactiveContext _reactiveContext;
+
   @override
   void initState() {
     super.initState();
     _viewModel = widget.create();
+    _reactiveContext = ReactiveContext();
+    _reactiveContext.addChangeCallback(_rebuild);
     _viewModel.onInit(); // Lifecycle hook
-    _viewModel.addListener(_rebuild); // Rebuild on notifyListeners
   }
 
-  /// Called when the ViewModel emits changes.
+  /// Called when any tracked reactive value changes.
   /// Triggers a rebuild of the widget.
   void _rebuild() {
     if (mounted) {
@@ -69,13 +64,17 @@ class _DeclareViewState<T extends ViewModel> extends State<DeclareView<T>> {
 
   @override
   void dispose() {
-    _viewModel.removeListener(_rebuild);
+    _reactiveContext.dispose();
     _viewModel.dispose(); // Clean up ViewModel and reactive resources
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, _viewModel);
+    // Run the builder within the reactive context to track value access
+    return ReactiveContext.runInContext(
+      _reactiveContext,
+      () => widget.builder(context, _viewModel),
+    );
   }
 }
