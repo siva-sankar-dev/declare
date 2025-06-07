@@ -9,17 +9,14 @@ import 'package:flutter/foundation.dart';
 
 class Published<T> extends ValueNotifier<T?> with TrackedValueMixin<T?> {
   Published([super.initialValue]);
-  
+
   /// Optional parent that gets notified when this value changes
   ChangeNotifier? _parent;
-  
+
   void setParent(ChangeNotifier parent) {
     _parent = parent;
   }
-  
-  @override
-  T? _getRawValue() => super.value;
-  
+
   @override
   set value(T? newValue) {
     if (super.value != newValue) {
@@ -27,20 +24,20 @@ class Published<T> extends ValueNotifier<T?> with TrackedValueMixin<T?> {
       _parent?.notifyListeners();
     }
   }
-  
+
   /// Update value and notify listeners
   void update(T? newValue) {
     value = newValue;
   }
-  
+
   /// Clear the value (set to null)
   void clear() {
     value = null;
   }
-  
+
   /// Check if has value
   bool get hasValue => value != null;
-  
+
   @override
   void dispose() {
     _parent = null;

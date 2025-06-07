@@ -18,9 +18,6 @@ abstract class ReactiveValue<T> extends ValueNotifier<T> with TrackedValueMixin<
   }
   
   @override
-  T _getRawValue() => super.value;
-  
-  @override
   set value(T newValue) {
     if (super.value != newValue) {
       super.value = newValue;
