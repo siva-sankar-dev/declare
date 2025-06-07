@@ -4,6 +4,7 @@
 //  Created by Siva Sankar on 2025-06-07.
 // ------------------------------------------------------------ //
 
+import 'package:declare/reactive/reactive_context.dart';
 import 'package:flutter/foundation.dart';
 
 /// A mixin that adds automatic tracking capabilities to reactive values

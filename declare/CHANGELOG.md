@@ -11,3 +11,6 @@
 
 ## 1.0.1 
 - Bug Fix : Changed State -> Prop avoid Conflicts
+
+## 1.0.2
+- Improved Version: Now Works Without Observer

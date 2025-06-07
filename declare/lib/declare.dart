@@ -11,6 +11,9 @@ export 'reactive/view_model.dart';
 export 'reactive/computed.dart';
 export 'reactive/reactive_value.dart';
 export 'reactive/extentions.dart';
+export 'reactive/reactive_context.dart';
+export 'reactive/tracked_reactive_value.dart';
+
 
 export 'widgets/declare_view.dart';
-export 'widgets/observer.dart';
+

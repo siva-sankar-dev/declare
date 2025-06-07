@@ -1,6 +1,6 @@
 name: declare
 description: "A lightweight, SwiftUI-inspired Prop management library for Flutter. Powered by Prop, ViewModel, and Published."
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/siva-sankar-dev/declare.git
 repository: https://github.com/siva-sankar-dev/declare.git
 issue_tracker: https://github.com/siva-sankar-dev/declare/issues

@@ -16,14 +16,14 @@ import 'package:flutter/material.dart';
 ///
 /// Example usage:
 /// ```dart
-/// DeclareView<MyViewModel>(
+/// Declare<MyViewModel>(
 ///   create: () => MyViewModel(),
 ///   builder: (context, viewModel) {
 ///     return Text('Count: ${viewModel.count.value}'); // Auto-reactive!
 ///   },
 /// );
 /// ```
-class DeclareView<T extends ViewModel> extends StatefulWidget {
+class Declare<T extends ViewModel> extends StatefulWidget {
   /// A factory function that creates a new instance of [ViewModel].
   final T Function() create;
 
@@ -31,14 +31,14 @@ class DeclareView<T extends ViewModel> extends StatefulWidget {
   /// for building the UI.
   final Widget Function(BuildContext context, T viewModel) builder;
 
-  /// Creates a [DeclareView] with the given [create] and [builder] functions.
-  const DeclareView({super.key, required this.create, required this.builder});
+  /// Creates a [Declare] with the given [create] and [builder] functions.
+  const Declare({super.key, required this.create, required this.builder});
 
   @override
-  State<DeclareView<T>> createState() => _DeclareViewState<T>();
+  State<Declare<T>> createState() => _DeclareState<T>();
 }
 
-class _DeclareViewState<T extends ViewModel> extends State<DeclareView<T>> {
+class _DeclareState<T extends ViewModel> extends State<Declare<T>> {
   /// Holds the instance of the created ViewModel.
   late final T _viewModel;
 
