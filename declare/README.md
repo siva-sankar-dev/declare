@@ -41,7 +41,7 @@ Extend the `ViewModel` class to hold your Publish values and logic.
 ```dart
 import 'package:declare/declare.dart';
 
-class CounterViewModel extends ViewModel with PropRegistrable {
+class CounterViewModel extends ViewModel {
  final counter = Prop(0);
 
   CounterViewModel() {
