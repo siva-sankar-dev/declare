@@ -22,7 +22,7 @@ Add `declare` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  declare: ^1.2.1
+  declare: ^1.3.1
 ```
 Or
 

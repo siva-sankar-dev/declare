@@ -2,7 +2,7 @@
 
 - Initial release of `declare`.
 
-## [1.3.0 - Stable] - 2025-06-08 
+## [1.3.1 - Stable] - 2025-06-08 
 
 ### Added
 - Added `onInit()` lifecycle method to `ViewModel` for initialization logic.
