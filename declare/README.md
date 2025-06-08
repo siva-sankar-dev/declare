@@ -22,7 +22,7 @@ Add `declare` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  declare: ^1.2.0
+  declare: ^1.2.1
 ```
 Or
 
@@ -41,7 +41,7 @@ Extend the `ViewModel` class to hold your Publish values and logic.
 ```dart
 import 'package:declare/declare.dart';
 
-class CounterViewModel extends ViewModel with PublishRegistrable {
+class CounterViewModel extends ViewModel with PropRegistrable {
   final Prop<int> counter = Prop(0);
 
   void increment() => counter.value++;

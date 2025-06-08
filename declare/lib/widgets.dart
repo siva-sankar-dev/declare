@@ -9,15 +9,35 @@ import 'package:declare/prop.dart';
 import 'package:declare/view_model.dart';
 import 'package:flutter/material.dart';
 
-/// A builder function to construct UI using the ViewModel.
+/// A builder function that provides the [BuildContext] and an instance of [ViewModel]
+/// to build a reactive widget.
 typedef ViewModelBuilder<T extends ViewModel> =
     Widget Function(BuildContext context, T viewModel);
 
-/// A widget that binds a [ViewModel] and rebuilds UI on Publish changes.
+/// A widget that binds a [ViewModel] to the widget tree and rebuilds the UI
+/// whenever any registered [Prop] within the ViewModel changes.
+///
+/// This enables a clean separation between business logic (ViewModel) and
+/// presentation (UI) using a declarative reactive approach.
 class Declare<T extends ViewModel> extends StatefulWidget {
+  /// Factory method to create the ViewModel instance.
   final T Function() create;
+
+  /// Builder function that provides the ViewModel to the widget tree.
   final ViewModelBuilder<T> builder;
 
+  /// Creates a [Declare] widget that manages the lifecycle of the ViewModel and
+  /// listens to any changes in its registered [Prop] fields.
+  ///
+  /// Example:
+  /// ```dart
+  /// Declare<CounterViewModel>(
+  ///   create: () => CounterViewModel(),
+  ///   builder: (context, viewModel) {
+  ///     return Text('Count: ${viewModel.counter.value}');
+  ///   },
+  /// );
+  /// ```
   const Declare({super.key, required this.create, required this.builder});
 
   @override
@@ -33,17 +53,19 @@ class _DeclareState<T extends ViewModel> extends State<Declare<T>> {
     super.initState();
     _viewModel = widget.create();
     _collectPublishFields();
+    _viewModel.onInit();
   }
 
+  /// Collects all [Prop] fields from the ViewModel and attaches listeners to them
+  /// to trigger widget rebuilds on value changes.
   void _collectPublishFields() {
-    if (_viewModel is PropRegistrable) {
-      _prop.addAll(((_viewModel as PropRegistrable).props));
-      for (var p in _prop) {
-        p.addListener(_onChange);
-      }
+    _prop.addAll(((_viewModel as PropRegistrable).props));
+    for (var p in _prop) {
+      p.addListener(_onChange);
     }
   }
 
+  /// Triggers a widget rebuild when any of the registered [Prop]s change.
   void _onChange() {
     if (mounted) setState(() {});
   }
