@@ -42,18 +42,23 @@ Extend the `ViewModel` class to hold your Publish values and logic.
 import 'package:declare/declare.dart';
 
 class CounterViewModel extends ViewModel with PropRegistrable {
-  final Prop<int> counter = Prop(0);
+ final counter = Prop(0);
 
-  void increment() => counter.value++;
+  CounterViewModel() {
+    register(counter); // No need to override props manually
+  }
 
   @override
-  List<Prop> get props => [counter];
+  void onInit() {
+    print('Initialized');
+  }
 
   @override
   void dispose() {
     // cleanup if needed
     super.dispose();
   }
+
 }
 ```
 
