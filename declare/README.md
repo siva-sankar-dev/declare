@@ -36,7 +36,7 @@ $ flutter pub add declare
 
 ### 1. Define a `ViewModel`
 
-Extend the `ViewModel` class to hold your Publish values and logic.
+Extend the `ViewModel` class to hold your Prop values and logic.
 
 ```dart
 import 'package:declare/declare.dart';
@@ -45,7 +45,7 @@ class CounterViewModel extends ViewModel {
  final counter = Prop(0);
 
   CounterViewModel() {
-    register(counter); // No need to override props manually
+    register(counter); 
   }
 
   @override
@@ -127,7 +127,7 @@ An abstract class meant to be extended by your logic classes. Override `dispose(
 
 ## 🧪 Example
 
-Check out the [example/](example/) directory for a full working demo.
+Check out the [example/](https://github.com/siva-sankar-dev/declare/tree/main/declare/example) directory for a full working demo.
 
 ---
 
