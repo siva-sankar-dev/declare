@@ -34,3 +34,7 @@ class CounterViewModel extends ViewModel {
   void increment() => counter.value++;
 }
 ```
+
+## [1.3.2 - Stable] - 2025-06-09
+
+- Readme Update
